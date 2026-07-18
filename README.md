@@ -5,6 +5,8 @@ An attended RPA bot that automates a procurement team's daily supplier monitorin
 Built with **UiPath Studio** (Windows, VB.NET expressions) against a formal **Process Design Document** produced by a six-person team (business analysts, developers, tester, solution architect).
 
 > **Final version:** [`Procurement Automation/`](Procurement%20Automation/) — the other project folders are earlier iterations, kept to show the build progression (see [Evolution](#evolution) below).
+>
+> **▶ [Watch an interactive replay of a verified run](https://ezieshie-stack.github.io/UiPath-Automation-Project/)** — animated execution log, live workbook view, and the alert results, re-enacted in the browser from real run data.
 
 ## What it does
 
