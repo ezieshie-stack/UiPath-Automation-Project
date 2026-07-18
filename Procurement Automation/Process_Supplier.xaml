@@ -114,12 +114,12 @@
   <Sequence DisplayName="Process_Supplier" sap:VirtualizedContainerService.HintSize="1006.8000000000001,2114.4" sap2010:WorkflowViewState.IdRef="Sequence_1">
     <Sequence.Variables>
       <Variable x:TypeArguments="x:String" Name="strAvailTextLocal" />
-      <Variable x:TypeArguments="scg:Dictionary(x:String, x:String)" Default="[New Dictionary(Of String, String) From {&#xA;    {&quot;adorama&quot;, &quot;2909.00&quot;},&#xA;    {&quot;micro center&quot;, &quot;999.99&quot;},&#xA;    {&quot;bhphotovideo&quot;, &quot;549.99&quot;},&#xA;    {&quot;insight&quot;, &quot;538.49&quot;},&#xA;    {&quot;microcad&quot;, &quot;688.70&quot;},&#xA;    {&quot;tomauri&quot;, &quot;114.99&quot;},&#xA;    {&quot;canada computer &amp; electronics&quot;, &quot;249.99&quot;}&#xA;}]" Name="dictRefPrices" />
+      <Variable x:TypeArguments="scg:Dictionary(x:String, x:String)" Default="[New Dictionary(Of String, String) From {&#xA;    {&quot;adorama&quot;, &quot;2909.00&quot;},&#xA;    {&quot;micro center&quot;, &quot;999.99&quot;},&#xA;    {&quot;bhphotovideo&quot;, &quot;549.99&quot;},&#xA;    {&quot;insight&quot;, &quot;538.49&quot;},&#xA;    {&quot;micro card&quot;, &quot;688.70&quot;},&#xA;    {&quot;tomauri&quot;, &quot;114.99&quot;},&#xA;    {&quot;canada computers &amp; electronics&quot;, &quot;249.99&quot;}&#xA;}]" Name="dictRefPrices" />
       <Variable x:TypeArguments="x:String" Name="strFinalPriceText" />
       <Variable x:TypeArguments="x:String" Name="strPriceClean" />
       <Variable x:TypeArguments="x:String" Name="strPriceText" />
       <Variable x:TypeArguments="x:String" Name="strSupplierNorm" />
-      <Variable x:TypeArguments="scg:Dictionary(x:String, x:String)" Default="[New Dictionary(Of String, String) From {&#xA;    {&quot;adorama&quot;, &quot;Available&quot;},&#xA;    {&quot;micro center&quot;, &quot;Available&quot;},&#xA;    {&quot;bhphotovideo&quot;, &quot;In Stock&quot;},&#xA;    {&quot;insight&quot;, &quot;In Stock&quot;},&#xA;    {&quot;microcad&quot;, &quot;Out of Stock&quot;},&#xA;    {&quot;tomauri&quot;, &quot;Available&quot;},&#xA;    {&quot;canada computer &amp; electronics&quot;, &quot;In Stock&quot;}&#xA;}]" Name="dictRefStock" />
+      <Variable x:TypeArguments="scg:Dictionary(x:String, x:String)" Default="[New Dictionary(Of String, String) From {&#xA;    {&quot;adorama&quot;, &quot;In Stock&quot;},&#xA;    {&quot;micro center&quot;, &quot;In Stock&quot;},&#xA;    {&quot;bhphotovideo&quot;, &quot;In Stock&quot;},&#xA;    {&quot;insight&quot;, &quot;In Stock&quot;},&#xA;    {&quot;micro card&quot;, &quot;Out of Stock&quot;},&#xA;    {&quot;tomauri&quot;, &quot;In Stock&quot;},&#xA;    {&quot;canada computers &amp; electronics&quot;, &quot;In Stock&quot;}&#xA;}]" Name="dictRefStock" />
       <Variable x:TypeArguments="x:String" Name="strNote" />
       <Variable x:TypeArguments="x:String" Name="str_Stock" />
       <Variable x:TypeArguments="x:Double" Name="dbl_Price" />
@@ -197,6 +197,9 @@
                       <x:Boolean x:Key="IsExpanded">True</x:Boolean>
                     </scg:Dictionary>
                   </sap:WorkflowViewStateService.ViewState>
+                  <Assign DisplayName="Default Price" sap:VirtualizedContainerService.HintSize="416,81"><Assign.To><OutArgument x:TypeArguments="x:Double">[out_Price]</OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:Double">[CDbl(If(dictRefPrices.ContainsKey(strSupplierNorm), dictRefPrices(strSupplierNorm), "0"))]</InArgument></Assign.Value></Assign>
+                  <Assign DisplayName="Default Stock" sap:VirtualizedContainerService.HintSize="416,81"><Assign.To><OutArgument x:TypeArguments="x:String">[out_Stock]</OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:String">[If(dictRefStock.ContainsKey(strSupplierNorm), dictRefStock(strSupplierNorm), "Unknown")]</InArgument></Assign.Value></Assign>
+                  <Assign DisplayName="Default Note" sap:VirtualizedContainerService.HintSize="416,81"><Assign.To><OutArgument x:TypeArguments="x:String">[out_Note]</OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:String">["No scraper branch for supplier; used reference data"]</InArgument></Assign.Value></Assign>
                 </Sequence>
               </Switch.Default>
               <sap:WorkflowViewStateService.ViewState>
@@ -312,7 +315,6 @@
                           </Assign.Value>
                         </Assign>
                       </Sequence>
-                    </If.Else>
                     </If.Else>
                   </If>
                   <Assign DisplayName="Assign Final Output Price" sap:VirtualizedContainerService.HintSize="416,81.6" sap2010:WorkflowViewState.IdRef="Assign_FinalOutPrice">
@@ -1006,6 +1008,9 @@
                     </Assign.Value>
                   </Assign>
                 </Sequence>
+                  <Assign DisplayName="Map IN Price" sap:VirtualizedContainerService.HintSize="416,81"><Assign.To><OutArgument x:TypeArguments="x:Double">[out_Price]</OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:Double">[dbl_Price]</InArgument></Assign.Value></Assign>
+                  <Assign DisplayName="Map IN Stock" sap:VirtualizedContainerService.HintSize="416,81"><Assign.To><OutArgument x:TypeArguments="x:String">[out_Stock]</OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:String">[str_Stock]</InArgument></Assign.Value></Assign>
+                  <Assign DisplayName="Map IN Note" sap:VirtualizedContainerService.HintSize="416,81"><Assign.To><OutArgument x:TypeArguments="x:String">[out_Note]</OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:String">[strNote]</InArgument></Assign.Value></Assign>
               </Sequence>
               <Sequence x:Key="&quot;micro card&quot;" DisplayName="Body" sap:VirtualizedContainerService.HintSize="483.2,116" sap2010:WorkflowViewState.IdRef="Sequence_29">
                 <sap:WorkflowViewStateService.ViewState>
@@ -1151,8 +1156,11 @@
                     </Assign.Value>
                   </Assign>
                 </Sequence>
+                  <Assign DisplayName="Map MCD Price" sap:VirtualizedContainerService.HintSize="416,81"><Assign.To><OutArgument x:TypeArguments="x:Double">[out_Price]</OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:Double">[dbl_Price]</InArgument></Assign.Value></Assign>
+                  <Assign DisplayName="Map MCD Stock" sap:VirtualizedContainerService.HintSize="416,81"><Assign.To><OutArgument x:TypeArguments="x:String">[out_Stock]</OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:String">[str_Stock]</InArgument></Assign.Value></Assign>
+                  <Assign DisplayName="Map MCD Note" sap:VirtualizedContainerService.HintSize="416,81"><Assign.To><OutArgument x:TypeArguments="x:String">[out_Note]</OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:String">[strNote]</InArgument></Assign.Value></Assign>
               </Sequence>
-              <Sequence x:Key="&quot;Tomauri&quot;" DisplayName="Body" sap:VirtualizedContainerService.HintSize="483.2,1242.4" sap2010:WorkflowViewState.IdRef="Sequence_31">
+              <Sequence x:Key="&quot;tomauri&quot;" DisplayName="Body" sap:VirtualizedContainerService.HintSize="483.2,1242.4" sap2010:WorkflowViewState.IdRef="Sequence_31">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1255,8 +1263,11 @@
                     </Assign.Value>
                   </Assign>
                 </Sequence>
+                  <Assign DisplayName="Map TM Price" sap:VirtualizedContainerService.HintSize="416,81"><Assign.To><OutArgument x:TypeArguments="x:Double">[out_Price]</OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:Double">[dbl_Price]</InArgument></Assign.Value></Assign>
+                  <Assign DisplayName="Map TM Stock" sap:VirtualizedContainerService.HintSize="416,81"><Assign.To><OutArgument x:TypeArguments="x:String">[out_Stock]</OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:String">[str_Stock]</InArgument></Assign.Value></Assign>
+                  <Assign DisplayName="Map TM Note" sap:VirtualizedContainerService.HintSize="416,81"><Assign.To><OutArgument x:TypeArguments="x:String">[out_Note]</OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:String">[strNote]</InArgument></Assign.Value></Assign>
               </Sequence>
-              <Sequence x:Key="&quot;canada computer &amp; electronics&quot;" DisplayName="Body" sap:VirtualizedContainerService.HintSize="483.2,116" sap2010:WorkflowViewState.IdRef="Sequence_32">
+              <Sequence x:Key="&quot;canada computers &amp; electronics&quot;" DisplayName="Body" sap:VirtualizedContainerService.HintSize="483.2,116" sap2010:WorkflowViewState.IdRef="Sequence_32">
                 <sap:WorkflowViewStateService.ViewState>
                   <scg:Dictionary x:TypeArguments="x:String, x:Object">
                     <x:Boolean x:Key="IsExpanded">True</x:Boolean>
@@ -1405,6 +1416,9 @@
                     </Assign.Value>
                   </Assign>
                 </Sequence>
+                  <Assign DisplayName="Map CC Price" sap:VirtualizedContainerService.HintSize="416,81"><Assign.To><OutArgument x:TypeArguments="x:Double">[out_Price]</OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:Double">[dbl_Price]</InArgument></Assign.Value></Assign>
+                  <Assign DisplayName="Map CC Stock" sap:VirtualizedContainerService.HintSize="416,81"><Assign.To><OutArgument x:TypeArguments="x:String">[out_Stock]</OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:String">[str_Stock]</InArgument></Assign.Value></Assign>
+                  <Assign DisplayName="Map CC Note" sap:VirtualizedContainerService.HintSize="416,81"><Assign.To><OutArgument x:TypeArguments="x:String">[out_Note]</OutArgument></Assign.To><Assign.Value><InArgument x:TypeArguments="x:String">[strNote]</InArgument></Assign.Value></Assign>
               </Sequence>
             </Switch>
           </Sequence>
