@@ -1,0 +1,16 @@
+# UiPath Studio local/generated files
+**/.local/
+**/.settings/
+**/.objects/
+**/.tmh/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Office temp files
+~$*
+
+# Claude local settings
+.claude/settings.local.json

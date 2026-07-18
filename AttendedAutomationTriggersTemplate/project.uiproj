@@ -1,0 +1,6 @@
+{
+  "Name": "AttendedAutomationTriggersTemplate",
+  "ProjectType": "Process",
+  "Description": "NewAttendedAutomationFrameworkDefaultDescription",
+  "MainFile": "Main.xaml"
+}

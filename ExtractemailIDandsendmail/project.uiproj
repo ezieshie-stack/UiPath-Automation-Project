@@ -1,0 +1,6 @@
+{
+  "Name": "ExtractemailIDandsendmail",
+  "ProjectType": "Process",
+  "Description": "Template used to read the list of email IDs from excel and send mail using desktop outlook to the extracted IDs.",
+  "MainFile": "Main.xaml"
+}
