@@ -313,7 +313,6 @@
                         </Assign>
                       </Sequence>
                     </If.Else>
-                    </If.Else>
                   </If>
                   <Assign DisplayName="Assign Final Output Price" sap:VirtualizedContainerService.HintSize="416,81.6" sap2010:WorkflowViewState.IdRef="Assign_FinalOutPrice">
                      <Assign.To>

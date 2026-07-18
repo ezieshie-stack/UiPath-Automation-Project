@@ -358,7 +358,6 @@
                 <OutArgument x:TypeArguments="x:Object">[CurrentRow("Stock status")]</OutArgument>
               </Assign.To>
               <Assign.Value>
-              <Assign.Value>
                 <InArgument x:TypeArguments="x:String">[str_Stock]</InArgument>
               </Assign.Value>
               <sap:WorkflowViewStateService.ViewState>
