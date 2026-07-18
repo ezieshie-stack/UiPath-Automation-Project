@@ -218,7 +218,9 @@
                 <InArgument x:TypeArguments="x:Double" xml:space="preserve">[If(
     String.IsNullOrWhiteSpace(CurrentRow("Threshold").ToString),
     0.05,
-    CDbl(CurrentRow("Threshold").ToString.Replace("%","")) / 100.0
+    If(CDbl(CurrentRow("Threshold").ToString.Replace("%","")) &gt; 1.0,
+        CDbl(CurrentRow("Threshold").ToString.Replace("%","")) / 100.0,
+        CDbl(CurrentRow("Threshold").ToString.Replace("%","")))
 )]</InArgument>
               </Assign.Value>
             </Assign>
@@ -329,8 +331,8 @@
                 <OutArgument x:TypeArguments="x:Boolean">[breach]</OutArgument>
               </Assign.To>
               <Assign.Value>
-                <InArgument x:TypeArguments="x:Boolean" xml:space="preserve">[(Math.Abs(dblPriceChangePct) &gt;= dblThreshold) _
-         OrElse (str_Stock &lt;&gt; strOldStock)]</InArgument>
+                <InArgument x:TypeArguments="x:Boolean" xml:space="preserve">[(dbl_Price &gt; 0 AndAlso Math.Abs(dblPriceChangePct) &gt;= dblThreshold) _
+         OrElse (str_Stock &lt;&gt; "Unknown" AndAlso str_Stock &lt;&gt; strOldStock)]</InArgument>
               </Assign.Value>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -344,7 +346,7 @@
                 <OutArgument x:TypeArguments="x:Object">[CurrentRow("Price")]</OutArgument>
               </Assign.To>
               <Assign.Value>
-                <InArgument x:TypeArguments="x:Double">[dbl_Price]</InArgument>
+                <InArgument x:TypeArguments="x:Object">[If(dbl_Price &gt; 0, CObj(dbl_Price), CurrentRow("Price"))]</InArgument>
               </Assign.Value>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -358,7 +360,7 @@
                 <OutArgument x:TypeArguments="x:Object">[CurrentRow("Stock status")]</OutArgument>
               </Assign.To>
               <Assign.Value>
-                <InArgument x:TypeArguments="x:String">[str_Stock]</InArgument>
+                <InArgument x:TypeArguments="x:Object">[If(str_Stock &lt;&gt; "Unknown", CObj(str_Stock), CurrentRow("Stock status"))]</InArgument>
               </Assign.Value>
               <sap:WorkflowViewStateService.ViewState>
                 <scg:Dictionary x:TypeArguments="x:String, x:Object">
@@ -367,11 +369,11 @@
                 </scg:Dictionary>
               </sap:WorkflowViewStateService.ViewState>
             </Assign>
-            <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[New Object() {&#xA;    Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;),   ' Timestamp&#xA;    strSupplier,                           ' Supplier&#xA;    strProductId,                          ' Product ID&#xA;    dblOldPrice,                           ' Old Price&#xA;    dbl_Price,                             ' New Price&#xA;    dblPriceChange,                        ' Price Difference&#xA;    dblPriceChangePct.ToString(&quot;P2&quot;),      ' Price Difference %&#xA;    str_Stock,                             ' Stock Status&#xA;    strNote                                ' Notes&#xA;}]" DataTable="[dt_Log]" DisplayName="Add Data Row (Log)" sap:VirtualizedContainerService.HintSize="451.2,188" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
+            <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[New Object() {&#xA;    Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;),   ' Timestamp&#xA;    strSupplier,                           ' Supplier&#xA;    strProductId,                          ' Product ID&#xA;    dblOldPrice,                           ' Old Price&#xA;    dbl_Price,                             ' New Price&#xA;    If(dblOldPrice = 0 OrElse dbl_Price = 0, CObj(&quot;N/A&quot;), CObj(dblPriceChange)),      ' Price Difference&#xA;    If(dblOldPrice = 0 OrElse dbl_Price = 0, &quot;N/A&quot;, dblPriceChangePct.ToString(&quot;P2&quot;)), ' Price Difference %&#xA;    str_Stock,                             ' Stock Status&#xA;    If(dbl_Price = 0 AndAlso String.IsNullOrWhiteSpace(strNote), &quot;Price Not Found&quot;, strNote) ' Notes&#xA;}]" DataTable="[dt_Log]" DisplayName="Add Data Row (Log)" sap:VirtualizedContainerService.HintSize="451.2,188" sap2010:WorkflowViewState.IdRef="AddDataRow_1" />
             <If Condition="[breach]" DisplayName="If Breach - Add Alert" sap:VirtualizedContainerService.HintSize="451.2,500" sap2010:WorkflowViewState.IdRef="If_1">
               <If.Then>
                 <Sequence DisplayName="Then" sap:VirtualizedContainerService.HintSize="416,215.2" sap2010:WorkflowViewState.IdRef="Sequence_4">
-                  <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[New Object() {&#xA;    Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;),   ' Timestamp&#xA;    strSupplier,                           ' Supplier&#xA;    strProductId,                          ' Product ID&#xA;    dblOldPrice,                           ' Old Price&#xA;    dbl_Price,                             ' New Price&#xA;    dblPriceChange,                        ' Price Difference&#xA;    dblPriceChangePct.ToString(&quot;P2&quot;),      ' Price Difference %&#xA;    str_Stock,                             ' Stock Status&#xA;    strNote                                ' Notes&#xA;}]" DataTable="[dt_Alerts]" DisplayName="Add Data Row (Alert)" sap:VirtualizedContainerService.HintSize="382.4,188" sap2010:WorkflowViewState.IdRef="AddDataRow_2" />
+                  <ui:AddDataRow DataRow="{x:Null}" ArrayRow="[New Object() {&#xA;    Now.ToString(&quot;yyyy-MM-dd HH:mm:ss&quot;),   ' Timestamp&#xA;    strSupplier,                           ' Supplier&#xA;    strProductId,                          ' Product ID&#xA;    dblOldPrice,                           ' Old Price&#xA;    dbl_Price,                             ' New Price&#xA;    If(dblOldPrice = 0 OrElse dbl_Price = 0, CObj(&quot;N/A&quot;), CObj(dblPriceChange)),      ' Price Difference&#xA;    If(dblOldPrice = 0 OrElse dbl_Price = 0, &quot;N/A&quot;, dblPriceChangePct.ToString(&quot;P2&quot;)), ' Price Difference %&#xA;    str_Stock,                             ' Stock Status&#xA;    If(dbl_Price = 0 AndAlso String.IsNullOrWhiteSpace(strNote), &quot;Price Not Found&quot;, strNote) ' Notes&#xA;}]" DataTable="[dt_Alerts]" DisplayName="Add Data Row (Alert)" sap:VirtualizedContainerService.HintSize="382.4,188" sap2010:WorkflowViewState.IdRef="AddDataRow_2" />
                 </Sequence>
               </If.Then>
               <If.Else>
